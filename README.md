@@ -31,3 +31,11 @@ This Chrome extension allows users to:
 ## Contribution
 
 Feel free to fork the repository and create pull requests for new features or improvements. Feedback is always welcome!
+
+## Disclaimer
+
+This Chrome extension is provided for educational and personal use only. It is designed to help users detect, preview, and download publicly available images on websites. The developer of this extension does not endorse or encourage unauthorized use of copyrighted materials or images that violate any applicable laws or terms of service.
+
+By using this extension, you agree to comply with all relevant copyright laws and website policies. The developer is not responsible for any misuse of this tool or any legal issues arising from its use.
+
+If you are unsure about the legality of downloading images from a specific website, consult the website's terms of service or seek legal advice before proceeding.
