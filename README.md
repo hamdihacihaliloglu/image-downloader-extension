@@ -32,6 +32,11 @@ This Chrome extension allows users to:
 
 Feel free to fork the repository and create pull requests for new features or improvements. Feedback is always welcome!
 
+## Screenshot
+![First Page Screenshot](https://github.com/hamdihacihaliloglu/image-downloader-extension/blob/main/Screenshot/image-downloader-0.png)
+
+![Main Page Screenshot](https://github.com/hamdihacihaliloglu/image-downloader-extension/blob/main/Screenshot/image-downloader-1.png)
+
 ## Disclaimer
 
 This Chrome extension is provided for educational and personal use only. It is designed to help users detect, preview, and download publicly available images on websites. The developer of this extension does not endorse or encourage unauthorized use of copyrighted materials or images that violate any applicable laws or terms of service.
