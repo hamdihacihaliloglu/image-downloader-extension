@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Image Downloader",
-    "version": "1.0",
+    "version": "0.0.1",
     "description": "Detect and download images from a website in their original sizes.",
     "permissions": ["activeTab", "downloads", "scripting"],
     "host_permissions": ["<all_urls>"],

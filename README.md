@@ -22,12 +22,17 @@ This Chrome extension allows users to:
 
 ## Installation
 
+### From Chrome Web Store
+
+1. Install the extension directly from the Chrome Web Store:  
+   [Image Downloader - Chrome Web Store](https://chromewebstore.google.com/detail/image-downloader/jdglnaenocodfkconfnfmidlmondhlik?authuser=0&hl=tr)
+
+### From Source Code
+
 1. Clone or download the repository.
 2. Go to `chrome://extensions/` in your browser.
 3. Enable "Developer mode."
 4. Click "Load unpacked" and select the folder containing this project.
-
-
 ## Contribution
 
 Feel free to fork the repository and create pull requests for new features or improvements. Feedback is always welcome!
