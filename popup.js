@@ -13,25 +13,30 @@ document.getElementById("detectImages").addEventListener("click", async () => {
       images.forEach((image) => {
         const listItem = document.createElement("li");
 
+        // Preview image
         // Önizleme resmi
         const preview = document.createElement("img");
         preview.src = image;
 
-        // URL bağlantısı
+        // Extract file name from URL
+        // URL'den dosya adını çıkar
         const fileName = image.split("/").pop();
 
-        // URL bağlantısı
+        // Create a link for the URL
+        // URL için bir bağlantı oluştur
         const link = document.createElement("a");
         link.href = image;
         link.textContent = fileName;
         link.target = "_blank";
 
-        // İndirme butonu
+        // Create a download button
+        // İndirme butonu oluştur
         const downloadButton = document.createElement("button");
         downloadButton.textContent = "Original";
         downloadButton.addEventListener("click", () => downloadImage(image));
 
-        // SVG -> PNG dönüştürme butonu
+        // Add an SVG to PNG conversion button if the file is SVG
+        // Dosya SVG ise, SVG'den PNG'ye dönüştürme butonu ekle
         if (image.endsWith(".svg")) {
           const convertButton = document.createElement("button");
           convertButton.textContent = "Convert to PNG";
@@ -40,7 +45,8 @@ document.getElementById("detectImages").addEventListener("click", async () => {
           listItem.appendChild(convertButton);
         }
 
-        // PNG -> SVG dönüştürme butonu
+        // Add a PNG to SVG conversion button if the file is PNG
+        // Dosya PNG ise, PNG'den SVG'ye dönüştürme butonu ekle
         if (image.endsWith(".png")) {
           const convertButton = document.createElement("button");
           convertButton.textContent = "Convert to SVG";
@@ -49,7 +55,8 @@ document.getElementById("detectImages").addEventListener("click", async () => {
           listItem.appendChild(convertButton);
         }
 
-        // Liste öğesine ekle
+        // Append elements to the list item
+        // Liste öğesine elemanları ekle
         listItem.appendChild(preview);
         listItem.appendChild(link);
         listItem.appendChild(downloadButton);
@@ -59,11 +66,15 @@ document.getElementById("detectImages").addEventListener("click", async () => {
   );
 });
 
+// Function to detect all images on the current page
+// Mevcut sayfadaki tüm resimleri algılayan işlev
 function detectImages() {
   const images = Array.from(document.images).map((img) => img.src);
   return images;
 }
 
+// Function to download an image
+// Bir resmi indirme işlevi
 function downloadImage(url) {
   chrome.downloads.download({
     url: url,
@@ -71,6 +82,7 @@ function downloadImage(url) {
   });
 }
 
+// Function to convert PNG to SVG
 // PNG'den SVG'ye dönüştürme işlevi
 async function convertToSVG(imageUrl) {
   const response = await fetch(imageUrl);
@@ -104,6 +116,7 @@ async function convertToSVG(imageUrl) {
   img.src = URL.createObjectURL(blob);
 }
 
+// Function to convert SVG to PNG
 // SVG'den PNG'ye dönüştürme işlevi
 async function convertSvgToPng(imageUrl) {
   const response = await fetch(imageUrl);
