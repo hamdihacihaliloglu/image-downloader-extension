@@ -63,7 +63,11 @@ This Chrome extension allows users to:
 4. Click "Load unpacked" and select the folder containing this project.
 
 ---
+## License
 
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+---
 ## 🤝 Contribution
 
 Feel free to fork the repository and create pull requests for new features or improvements. Feedback is always welcome!
