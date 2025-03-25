@@ -1,3 +1,43 @@
+document.getElementById("backToStart").addEventListener("click", () => {
+  document.getElementById("imageScreen").classList.add("hidden");
+  document.getElementById("startScreen").classList.remove("hidden");
+});
+
+// Detect Images 
+function detectImages() {
+  const images = Array.from(document.images)
+    .map((img) => img.src)
+    .filter((src) => 
+      src && 
+      !src.includes("svg%3e") && 
+      !src.startsWith("data:image/svg") && 
+      !src.startsWith("about:")
+    );
+
+  const formatPriority = (url) => {
+    if (url.endsWith(".svg")) return 1;
+    if (url.endsWith(".png")) return 2;
+    if (url.endsWith(".jpg") || url.endsWith(".jpeg")) return 3; 
+    if (url.endsWith(".webp") || url.endsWith(".avif")) return 4; 
+    return 5; 
+  };
+
+  images.sort((a, b) => formatPriority(a) - formatPriority(b));
+
+  return Array.from(new Set(images));
+}
+
+function downloadImage(url) {
+  chrome.downloads.download({
+    url: url,
+    filename: url.split("/").pop(),
+  });
+}
+
+document.getElementById("refreshImages").addEventListener("click", () => {
+  document.getElementById("detectImages").click();
+});
+
 document.getElementById("detectImages").addEventListener("click", async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
@@ -10,80 +50,114 @@ document.getElementById("detectImages").addEventListener("click", async () => {
       const images = results[0].result;
       const imageList = document.getElementById("imageList");
       imageList.innerHTML = "";
+
       images.forEach((image) => {
         const listItem = document.createElement("li");
 
-        // Preview image
-        // Önizleme resmi
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = image;
+        checkbox.classList.add("image-checkbox");
+
         const preview = document.createElement("img");
         preview.src = image;
 
-        // Extract file name from URL
-        // URL'den dosya adını çıkar
         const fileName = image.split("/").pop();
-
-        // Create a link for the URL
-        // URL için bir bağlantı oluştur
         const link = document.createElement("a");
         link.href = image;
         link.textContent = fileName;
         link.target = "_blank";
+        link.classList.add("image-url");
 
-        // Create a download button
-        // İndirme butonu oluştur
+        const convertToPngButton = document.createElement("button");
+        convertToPngButton.textContent = "SVG to PNG";
+        convertToPngButton.classList.add("convert-to-png");
+        convertToPngButton.addEventListener("click", () => convertSvgToPng(image));
+
+        const convertToSvgButton = document.createElement("button");
+        convertToSvgButton.textContent = "PNG to SVG";
+        convertToSvgButton.classList.add("convert-to-svg");
+        convertToSvgButton.addEventListener("click", () => convertToSVG(image));
+
         const downloadButton = document.createElement("button");
-        downloadButton.textContent = "Original";
+        downloadButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+      `;
+        downloadButton.classList.add("download-btn");
         downloadButton.addEventListener("click", () => downloadImage(image));
 
-        // Add an SVG to PNG conversion button if the file is SVG
-        // Dosya SVG ise, SVG'den PNG'ye dönüştürme butonu ekle
-        if (image.endsWith(".svg")) {
-          const convertButton = document.createElement("button");
-          convertButton.textContent = "Convert to PNG";
-          convertButton.classList.add("convert-to-svg");
-          convertButton.addEventListener("click", () => convertSvgToPng(image));
-          listItem.appendChild(convertButton);
-        }
-
-        // Add a PNG to SVG conversion button if the file is PNG
-        // Dosya PNG ise, PNG'den SVG'ye dönüştürme butonu ekle
-        if (image.endsWith(".png")) {
-          const convertButton = document.createElement("button");
-          convertButton.textContent = "Convert to SVG";
-          convertButton.classList.add("convert-to-png");
-          convertButton.addEventListener("click", () => convertToSVG(image));
-          listItem.appendChild(convertButton);
-        }
-
-        // Append elements to the list item
-        // Liste öğesine elemanları ekle
+        listItem.appendChild(checkbox);
         listItem.appendChild(preview);
         listItem.appendChild(link);
         listItem.appendChild(downloadButton);
+        if (image.endsWith(".svg")) listItem.appendChild(convertToPngButton);
+        if (image.endsWith(".png")) listItem.appendChild(convertToSvgButton);
         imageList.appendChild(listItem);
       });
+
+      document.getElementById("startScreen").classList.add("hidden");
+      document.getElementById("imageScreen").classList.remove("hidden");
     }
   );
 });
 
-// Function to detect all images on the current page
-// Mevcut sayfadaki tüm resimleri algılayan işlev
-function detectImages() {
-  const images = Array.from(document.images).map((img) => img.src);
-  return images;
-}
+// Download 
+document.getElementById("downloadSelected").addEventListener("click", () => {
+  const selectedImages = Array.from(document.querySelectorAll(".image-checkbox:checked"))
+    .map((checkbox) => checkbox.value);
 
-// Function to download an image
-// Bir resmi indirme işlevi
-function downloadImage(url) {
-  chrome.downloads.download({
-    url: url,
-    filename: url.split("/").pop(),
+  if (selectedImages.length === 0) {
+    alert("Please select at least one image!");
+    return;
+  }
+
+  selectedImages.forEach((imageUrl, index) => {
+    setTimeout(() => {
+      chrome.downloads.download({
+        url: imageUrl,
+        filename: imageUrl.split("/").pop(),
+      });
+    }, index * 500); 
   });
-}
+});
+
+
+document.getElementById("convertSvgToPng").addEventListener("click", async () => {
+  const selectedImages = Array.from(document.querySelectorAll(".image-checkbox:checked"))
+    .map((checkbox) => checkbox.value)
+    .filter((url) => url.endsWith(".svg")); 
+
+  if (selectedImages.length === 0) {
+    alert("Please select at least one SVG image!");
+    return;
+  }
+
+  selectedImages.forEach((imageUrl, index) => {
+    setTimeout(() => convertSvgToPng(imageUrl), index * 1000); 
+  });
+});
+
+
+document.getElementById("convertPngToSvg").addEventListener("click", async () => {
+  const selectedImages = Array.from(document.querySelectorAll(".image-checkbox:checked"))
+    .map((checkbox) => checkbox.value)
+    .filter((url) => url.endsWith(".png"));
+
+  if (selectedImages.length === 0) {
+    alert("Please select at least one PNG image!");
+    return;
+  }
+
+  selectedImages.forEach((imageUrl, index) => {
+    setTimeout(() => convertToSVG(imageUrl), index * 1000);
+  });
+});
 
 // Function to convert PNG to SVG
-// PNG'den SVG'ye dönüştürme işlevi
 async function convertToSVG(imageUrl) {
   const response = await fetch(imageUrl);
   const blob = await response.blob();
@@ -117,7 +191,6 @@ async function convertToSVG(imageUrl) {
 }
 
 // Function to convert SVG to PNG
-// SVG'den PNG'ye dönüştürme işlevi
 async function convertSvgToPng(imageUrl) {
   const response = await fetch(imageUrl);
   const svgText = await response.text();
@@ -145,4 +218,53 @@ async function convertSvgToPng(imageUrl) {
   };
 
   img.src = svgUrl;
+}
+
+
+// Resize and download images
+document.getElementById("resizeAndDownload").addEventListener("click", async () => {
+  const selectedImages = Array.from(document.querySelectorAll(".image-checkbox:checked"))
+    .map((checkbox) => checkbox.value);
+
+  if (selectedImages.length === 0) {
+    alert("Please select at least one image!");
+    return;
+  }
+  const width = parseInt(document.getElementById("resizeWidth").value, 10) || 100;
+  const height = parseInt(document.getElementById("resizeHeight").value, 10) || 100;
+
+  if (width <= 0 || height <= 0) {
+    alert("Please enter a valid width and height!");
+    return;
+  }
+
+  selectedImages.forEach((imageUrl, index) => {
+    setTimeout(() => resizeImageAndDownload(imageUrl, width, height), index * 1000);
+  });
+});
+
+
+async function resizeImageAndDownload(imageUrl, newWidth, newHeight) {
+  const response = await fetch(imageUrl);
+  const blob = await response.blob();
+  const img = new Image();
+
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+
+    context.drawImage(img, 0, 0, newWidth, newHeight);
+    canvas.toBlob((resizedBlob) => {
+      const resizedUrl = URL.createObjectURL(resizedBlob);
+      chrome.downloads.download({
+        url: resizedUrl,
+        filename: `resized_${imageUrl.split("/").pop()}`,
+      });
+    });
+  };
+
+  img.src = URL.createObjectURL(blob);
 }

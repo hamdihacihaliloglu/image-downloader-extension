@@ -1,132 +1,262 @@
+/* ============================
+   Genel Ayarlar & Yardımcı Sınıflar
+   Global Settings & Utility Classes
+=============================== */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
-  }
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 600px;
+  background: #f4f4f4;
+}
 
-  .container {
-    padding: 20px;
-    max-width: 600px;
-    margin: auto;
-    background: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
+.hidden {
+  display: none;
+}
 
-  h1 {
-    font-size: 1.5em;
-    text-align: center;
-    color: #444;
-    margin-bottom: 20px;
-  }
+.screen {
+  padding: 20px;
+  text-align: center;
+}
 
-  .btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .btn:hover {
-    background: #0056b3;
-  }
+/* ============================
+   Genel Buton Stilleri
+   General Button Styles
+=============================== */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-  .image-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
+.btn:hover {
+  background: #0056b3;
+}
 
-  .image-list li {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    margin-bottom: 10px;
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
 
-  .image-list img {
-    width: 50px;
-    height: 50px;
-    border-radius: 4px;
-    margin-right: 15px;
-  }
+.btn-icon:hover {
+  transform: scale(1.2);
+  color: green;
+}
 
-  .image-list a {
-    flex: 1; 
-    text-decoration: none;
-    color: #007bff;
-    width: 200px; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  .image-list a:hover {
-    text-decoration: underline;
-  }
-  
-  .image-list button {
-    background: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    margin-left: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    width:120px;
-  }
-  
-  .image-list button:hover {
-    background: #218838;
-  }
-  
+/* ============================
+   Sidebar & İçerik
+   Sidebar & Content
+=============================== */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 120px;
+  background: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
 
-  /* SVG to PNG Butonu */
-  .image-list button.convert-to-png {
-    background-color: #ff6347;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 0.9em;
-    margin-left: 10px;
-    margin-right: 5px;
-    width:120px;
-  }
-  
-  .image-list button.convert-to-png:hover {
-    background-color: #e5533d;
-  }
-  
-  /* PNG to SVG Butonu */
-  .image-list button.convert-to-svg {
-    background-color: #4682b4;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 0.9em;
-    margin-left: 10px;
-    margin-right: 5px;
-    width:120px;
-  }
-  
-  .image-list button.convert-to-svg:hover {
-    background-color: #376994;
-  }
+.sidebar .btn {
+  width: 90%;
+  margin: 5px 0;
+  color: white;
+  background: #007bff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sidebar .btn-secondary {
+  background: #6c757d;
+}
+
+.content {
+  margin-left: 140px;
+  padding: 10px;
+}
+
+/* ============================
+   Toolbar
+   Toolbar
+=============================== */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+}
+
+/* ============================
+   Resim Listesi & İlgili Elemanlar
+   Image List & Related Elements
+=============================== */
+#imageScreen {
+  height: 700px; 
+  overflow-y: auto;
+}
+
+/* Liste kapsayıcısı / List container */
+.image-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Liste elemanı / List item */
+.image-list li {
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Checkbox */
+.image-checkbox {
+  width: 20px; /* Sabit genişlik / Fixed width */
+  height: 20px; /* Sabit yükseklik / Fixed height */
+  cursor: pointer;
+  flex-shrink: 0; /* Küçülmeyi engelle / Prevent shrinking */
+}
+
+/* Resim önizleme / Image preview */
+.image-list img {
+  width: 80px;
+  height: auto;
+  display: block;
+}
+
+/* Resim URL metni / Image URL text */
+.image-url {
+  flex-grow: 1;
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Ek resim elemanı düzeni / Additional image item layout */
+.image-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* ============================
+   Dönüştürme Butonları
+   Conversion Buttons
+=============================== */
+.convert-to-png,
+.convert-to-svg {
+  width: 100px; /* Sabit genişlik / Fixed width */
+  text-align: center;
+  background-color: orange;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  flex-shrink: 0; /* Küçülmeyi engelle / Prevent shrinking */
+}
+
+.convert-to-svg {
+  background-color: blue;
+}
+
+.convert-to-png:hover {
+  background-color: darkorange;
+}
+
+.convert-to-svg:hover {
+  background-color: darkblue;
+}
+
+/* ============================
+   Yeniden Boyutlandırma Bölümü
+   Resize Section
+=============================== */
+.resize-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background: #444;
+  border-radius: 5px;
+  margin-top: 10px;
+  color: white;
+}
+
+.resize-section label {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.resize-section input {
+  width: 80px;
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+}
+
+.resize-section .btn {
+  margin-top: 5px;
+  background-color: #28a745;
+}
+
+.resize-section .btn:hover {
+  background-color: #218838;
+}
+
+/* ============================
+   Diğer Elemanlar
+   Other Elements
+=============================== */
+.preview-img {
+  width: 50px;
+  height: auto;
+  border-radius: 5px;
+}
+
+.download-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.download-btn:hover {
+  transform: scale(1.2);
+  color: green;
+}
+
+.download-btn svg {
+  width: 20px;
+  height: 20px;
+}

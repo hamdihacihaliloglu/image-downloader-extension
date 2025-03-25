@@ -7,11 +7,43 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
+  <div id="startScreen" class="screen">
     <h1>Image Downloader</h1>
     <button id="detectImages" class="btn">Detect Images</button>
-    <ul id="imageList" class="image-list"></ul>
   </div>
+
+  <div id="imageScreen" class="screen hidden">
+    <div class="sidebar">
+      <div class="toolbar">
+        <button id="backToStart" class="btn-icon">
+          ⬅️
+        </button>
+        <button id="refreshImages" class="btn-icon">
+          🔄
+        </button>
+      </div>
+      <button id="downloadSelected" class="btn">Download Selected</button>
+      <button id="convertSvgToPng" class="btn">Convert SVGs to PNG</button>
+      <button id="convertPngToSvg" class="btn">Convert PNGs to SVG</button>
+      <!-- Resize Section -->
+      <div class="resize-section">
+        <label for="resizeWidth">Width:</label>
+        <input type="number" id="resizeWidth" placeholder="100" min="1">
+    
+        <label for="resizeHeight">Height:</label>
+        <input type="number" id="resizeHeight" placeholder="100" min="1">
+    
+        <button id="resizeAndDownload" class="btn">Resize & Download</button>
+      </div>
+    </div>
+    
+    <div class="content">
+      <h2>Detected Images</h2>
+      <ul id="imageList" class="image-list"></ul>
+    </div>
+
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>
