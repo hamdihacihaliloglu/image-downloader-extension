@@ -1,5 +1,3 @@
-### V2 için düzenlenmiş README.md
-
 ---
 
 # Image Detection and Conversion Chrome Extension
