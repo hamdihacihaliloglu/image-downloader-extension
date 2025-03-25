@@ -1,4 +1,3 @@
----
 
 # Image Detection and Conversion Chrome Extension
 
