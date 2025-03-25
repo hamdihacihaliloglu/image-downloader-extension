@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "Image Downloader",
-    "version": "0.0.1",
-    "description": "Detect and download images from a website in their original sizes.",
+    "version": "0.0.2",
+    "description": "Easily detect, download, convert (SVG to PNG, PNG to SVG), and resize images from any website.",
     "permissions": ["activeTab", "downloads", "scripting"],
     "host_permissions": ["<all_urls>"],
     "background": {
