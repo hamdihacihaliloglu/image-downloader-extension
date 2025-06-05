@@ -28,7 +28,7 @@ function detectImages() {
 }
 
 function downloadImage(url) {
-  chrome.downloads.download({
+  browser.downloads.download({
     url: url,
     filename: url.split("/").pop(),
   });
@@ -39,15 +39,15 @@ document.getElementById("refreshImages").addEventListener("click", () => {
 });
 
 document.getElementById("detectImages").addEventListener("click", async () => {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
 
-  chrome.scripting.executeScript(
+  browser.tabs.executeScript(
+    tab.id,
     {
-      target: { tabId: tab.id },
-      func: detectImages,
+      code: `(${detectImages.toString()})()`
     },
     (results) => {
-      const images = results[0].result;
+      const images = results[0];
       const imageList = document.getElementById("imageList");
       imageList.innerHTML = "";
 
@@ -117,7 +117,7 @@ document.getElementById("downloadSelected").addEventListener("click", () => {
 
   selectedImages.forEach((imageUrl, index) => {
     setTimeout(() => {
-      chrome.downloads.download({
+      browser.downloads.download({
         url: imageUrl,
         filename: imageUrl.split("/").pop(),
       });
@@ -181,7 +181,7 @@ async function convertToSVG(imageUrl) {
     const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
     const svgUrl = URL.createObjectURL(blob);
 
-    chrome.downloads.download({
+    browser.downloads.download({
       url: svgUrl,
       filename: "converted_image.svg",
     });
@@ -210,7 +210,7 @@ async function convertSvgToPng(imageUrl) {
 
     canvas.toBlob((blob) => {
       const pngUrl = URL.createObjectURL(blob);
-      chrome.downloads.download({
+      browser.downloads.download({
         url: pngUrl,
         filename: "converted_image.png",
       });
@@ -259,7 +259,7 @@ async function resizeImageAndDownload(imageUrl, newWidth, newHeight) {
     context.drawImage(img, 0, 0, newWidth, newHeight);
     canvas.toBlob((resizedBlob) => {
       const resizedUrl = URL.createObjectURL(resizedBlob);
-      chrome.downloads.download({
+      browser.downloads.download({
         url: resizedUrl,
         filename: `resized_${imageUrl.split("/").pop()}`,
       });
